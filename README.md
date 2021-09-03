@@ -1,4 +1,62 @@
-# TSDX React User Guide
+# Google Adsense for Next.js
+Load Google Adsense script and place the ad code.
+
+## Requirement
+
+You need to use Next.js >=11.0.
+Because the library using `next/script` feature.
+
+## Usage
+
+```jsx
+import GoogleAdsense from 'next-google-ads'
+
+export const GoogleAdsenseWidget: FC = () => {
+  return (
+      <GoogleAdsense
+        client="ca-pub-xxxxx"
+        slot="99999999"
+        responsive="true"
+      />
+  )
+}
+```
+
+## Load ad.js manually
+
+
+```jsx
+import Script from 'next/script';
+import {GoogleAdsenseWidget} from 'next-google-ads'
+
+export const GoogleAdsenseWidget: FC = () => {
+  return (
+    <>
+      <Script
+        id="google-adsense"
+        src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+        data-ad-client="ca-pub-xxxxx"
+        onLoad={() => {
+          if (typeof window !== 'undefined') {
+            window.onload = () => {
+              ((window as any).adsbygoogle =
+                (window as any).adsbygoogle || []).push({});
+            };
+          }
+        }}
+      />
+      <GoogleAdsenseWidget
+        client="ca-pub-xxxxx"
+        slot="99999999"
+        responsive="true"
+      />
+      </>
+  )
+}
+```
+
+
+# [Appendix] TSDX React User Guide
 
 Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
 
