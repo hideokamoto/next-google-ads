@@ -55,7 +55,8 @@ export const NextGoogleAdsenseScript: FC<Pick<
       crossOrigin="anonymous"
       onLoad={() => {
         try {
-          ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+          ((window as any).adsbygoogle =
+            (window as any).adsbygoogle || []).push({});
         } catch (err) {
           console.error('AdSense error:', err);
         }
