@@ -53,14 +53,11 @@ export const NextGoogleAdsenseScript: FC<Pick<
       data-ad-client={client}
       strategy="afterInteractive"
       crossOrigin="anonymous"
-      async
       onLoad={() => {
-        if (typeof window !== 'undefined') {
-          try {
-            ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-          } catch (err) {
-            console.error('AdSense error:', err);
-          }
+        try {
+          ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+        } catch (err) {
+          console.error('AdSense error:', err);
         }
       }}
     />
