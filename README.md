@@ -1,35 +1,129 @@
-# Google Adsense for Next.js
-Load Google Adsense script and place the ad code.
+# next-google-ads
 
-## Requirement
+A lightweight Google AdSense component for Next.js with optimized script loading using Next.js's `next/script` feature.
 
-You need to use Next.js >=16.0 and React >=19.0.
-This library uses the `next/script` feature with optimized loading strategies.
+## Features
 
-## Usage
+- 🚀 Optimized script loading with Next.js Script component
+- 📦 TypeScript support out of the box
+- 🔄 Full ESM and CommonJS support
+- 📱 Responsive ad support
+- ⚡ Zero runtime dependencies (only peer dependencies)
+
+## Requirements
+
+- Next.js >= 16.0
+- React >= 19.0
+- Node.js >= 20.19.0
+
+## Migration Guide (v0.x → v1.0.0)
+
+If you're upgrading from v0.x to v1.0.0, please follow these steps:
+
+### 1. Update Your Dependencies
+
+v1.0.0 requires newer versions of Next.js, React, and Node.js:
+
+```bash
+# Update Next.js to v16 or later
+npm install next@^16.0.0
+
+# Update React to v19 or later
+npm install react@^19.0.0 react-dom@^19.0.0
+
+# Ensure Node.js >= 20.19.0
+node --version  # Should be >= 20.19.0
+```
+
+### 2. Update the Package
+
+```bash
+npm install next-google-ads@^1.0.0
+```
+
+### 3. Code Changes
+
+**Good news**: The API remains the same! Your existing code should work without changes. However, please verify:
+
+- ✅ Component imports and usage remain unchanged
+- ✅ Props interface is identical
+- ✅ TypeScript types are compatible
+
+### 4. Breaking Changes
+
+- **Node.js**: Requires Node.js >= 20.19.0 (if you were using an older version)
+- **Next.js**: Requires Next.js >= 16.0 (if you were using Next.js < 16)
+- **React**: Requires React >= 19.0 (if you were using React < 19)
+
+### 5. Verify Your Setup
+
+After upgrading, test your AdSense components to ensure they're working correctly:
+
+```bash
+# Run your development server
+npm run dev
+
+# Check for any TypeScript errors
+npm run build
+```
+
+### Need Help?
+
+If you encounter any issues during migration, please:
+- Check the [GitHub Issues](https://github.com/hideokamoto/next-google-ads/issues)
+- Review the [full changelog](https://github.com/hideokamoto/next-google-ads/releases/tag/v1.0.0)
+
+## Installation
+
+```bash
+npm install next-google-ads
+```
+
+or
+
+```bash
+yarn add next-google-ads
+```
+
+or
+
+```bash
+pnpm add next-google-ads
+```
+
+## Quick Start
+
+### Basic Usage
+
+The simplest way to use this library is with the default `GoogleAdsense` component, which includes both the script loader and the ad widget:
 
 ```jsx
 import GoogleAdsense from 'next-google-ads'
 
-export const GoogleAdsenseWidget: FC = () => {
+export default function MyPage() {
   return (
-      <GoogleAdsense
-        client="ca-pub-xxxxx"
-        slot="99999999"
-        responsive="true"
-      />
+    <GoogleAdsense
+      client="ca-pub-xxxxx"
+      slot="99999999"
+      responsive="true"
+    />
   )
 }
 ```
 
-## Load ad.js manually
+### Advanced Usage
 
+If you need more control, you can use the individual components:
+
+#### Using GoogleAdsenseWidget only
+
+Use this when you want to load the AdSense script manually or have already loaded it elsewhere:
 
 ```jsx
-import Script from 'next/script';
-import {GoogleAdsenseWidget} from 'next-google-ads'
+import { GoogleAdsenseWidget } from 'next-google-ads'
+import Script from 'next/script'
 
-export const GoogleAdsenseWidget: FC = () => {
+export default function MyPage() {
   return (
     <>
       <Script
@@ -41,9 +135,9 @@ export const GoogleAdsenseWidget: FC = () => {
         onLoad={() => {
           try {
             ((window as any).adsbygoogle =
-              (window as any).adsbygoogle || []).push({});
+              (window as any).adsbygoogle || []).push({})
           } catch (err) {
-            console.error('AdSense error:', err);
+            console.error('AdSense error:', err)
           }
         }}
       />
@@ -52,197 +146,175 @@ export const GoogleAdsenseWidget: FC = () => {
         slot="99999999"
         responsive="true"
       />
-      </>
+    </>
   )
 }
 ```
 
+#### Using NextGoogleAdsenseScript only
 
-# [Appendix] TSDX React User Guide
+Use this when you want to load the script but render the ad widget yourself:
 
-Congrats! You just saved yourself hours of work by bootstrapping this project with TSDX. Let’s get you oriented with what’s here and how to use it.
+```jsx
+import { NextGoogleAdsenseScript } from 'next-google-ads'
 
-> This TSDX setup is meant for developing React component libraries (not apps!) that can be published to NPM. If you’re looking to build a React-based app, you should use `create-react-app`, `razzle`, `nextjs`, `gatsby`, or `react-static`.
-
-> If you’re new to TypeScript and React, checkout [this handy cheatsheet](https://github.com/sw-yx/react-typescript-cheatsheet/)
-
-## Commands
-
-TSDX scaffolds your new library inside `/src`, and also sets up a [Parcel-based](https://parceljs.org) playground for it inside `/example`.
-
-The recommended workflow is to run TSDX in one terminal:
-
-```bash
-npm start # or yarn start
-```
-
-This builds to `/dist` and runs the project in watch mode so any edits you save inside `src` causes a rebuild to `/dist`.
-
-Then run the example inside another:
-
-```bash
-cd example
-npm i # or yarn to install dependencies
-npm start # or yarn start
-```
-
-The default example imports and live reloads whatever is in `/dist`, so if you are seeing an out of date component, make sure TSDX is running in watch mode like we recommend above. **No symlinking required**, we use [Parcel's aliasing](https://parceljs.org/module_resolution.html#aliases).
-
-To do a one-off build, use `npm run build` or `yarn build`.
-
-To run tests, use `npm test` or `yarn test`.
-
-## Configuration
-
-Code quality is set up for you with `prettier`, `husky`, and `lint-staged`. Adjust the respective fields in `package.json` accordingly.
-
-### Jest
-
-Jest tests are set up to run with `npm test` or `yarn test`.
-
-### Bundle analysis
-
-Calculates the real cost of your library using [size-limit](https://github.com/ai/size-limit) with `npm run size` and visulize it with `npm run analyze`.
-
-#### Setup Files
-
-This is the folder structure we set up for you:
-
-```txt
-/example
-  index.html
-  index.tsx       # test your component here in a demo app
-  package.json
-  tsconfig.json
-/src
-  index.tsx       # EDIT THIS
-/test
-  blah.test.tsx   # EDIT THIS
-.gitignore
-package.json
-README.md         # EDIT THIS
-tsconfig.json
-```
-
-#### React Testing Library
-
-We do not set up `react-testing-library` for you yet, we welcome contributions and documentation on this.
-
-### Rollup
-
-TSDX uses [Rollup](https://rollupjs.org) as a bundler and generates multiple rollup configs for various module formats and build settings. See [Optimizations](#optimizations) for details.
-
-### TypeScript
-
-`tsconfig.json` is set up to interpret `dom` and `esnext` types, as well as `react` for `jsx`. Adjust according to your needs.
-
-## Continuous Integration
-
-### GitHub Actions
-
-Two actions are added by default:
-
-- `main` which installs deps w/ cache, lints, tests, and builds on all pushes against a Node and OS matrix
-- `size` which comments cost comparison of your library on every pull request using [`size-limit`](https://github.com/ai/size-limit)
-
-## Optimizations
-
-Please see the main `tsdx` [optimizations docs](https://github.com/palmerhq/tsdx#optimizations). In particular, know that you can take advantage of development-only optimizations:
-
-```js
-// ./types/index.d.ts
-declare var __DEV__: boolean;
-
-// inside your code...
-if (__DEV__) {
-  console.log('foo');
+export default function MyPage() {
+  return (
+    <>
+      <NextGoogleAdsenseScript client="ca-pub-xxxxx" />
+      {/* Your custom ad widget implementation */}
+    </>
+  )
 }
 ```
 
-You can also choose to install and use [invariant](https://github.com/palmerhq/tsdx#invariant) and [warning](https://github.com/palmerhq/tsdx#warning) functions.
+## API Reference
 
-## Module Formats
+### GoogleAdsense (Default Export)
 
-CJS, ESModules, and UMD module formats are supported.
+The main component that includes both script loading and ad widget rendering.
 
-The appropriate paths are configured in `package.json` and `dist/index.js` accordingly. Please report if any issues are found.
+**Props:**
 
-## Deploying the Example Playground
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `client` | `string` | Yes | - | Your Google AdSense client ID (e.g., `"ca-pub-xxxxx"`) |
+| `slot` | `string` | Yes | - | Your ad slot ID |
+| `responsive` | `string` | No | `"false"` | Set to `"true"` for responsive ads |
+| `format` | `string` | No | `"auto"` | Ad format |
+| `layout` | `string` | No | `""` | Ad layout |
+| `layoutKey` | `string` | No | `""` | Ad layout key |
+| `className` | `string` | No | `""` | Additional CSS class names |
+| `style` | `CSSProperties` | No | `{ display: 'block', width: '728px', height: '90px' }` | Inline styles |
 
-The Playground is just a simple [Parcel](https://parceljs.org) app, you can deploy it anywhere you would normally deploy that. Here are some guidelines for **manually** deploying with the Netlify CLI (`npm i -g netlify-cli`):
+### GoogleAdsenseWidget
+
+Renders only the ad widget (ins element). Use this when you handle script loading separately.
+
+**Props:** Same as `GoogleAdsense` (except script-related props are not used)
+
+### NextGoogleAdsenseScript
+
+Loads only the Google AdSense script. Use this when you want to render the ad widget yourself.
+
+**Props:**
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `client` | `string` | Yes | Your Google AdSense client ID |
+
+## Examples
+
+### Responsive Ad
+
+```jsx
+import GoogleAdsense from 'next-google-ads'
+
+export default function MyPage() {
+  return (
+    <GoogleAdsense
+      client="ca-pub-xxxxx"
+      slot="99999999"
+      responsive="true"
+    />
+  )
+}
+```
+
+### Fixed Size Ad with Custom Styling
+
+```jsx
+import GoogleAdsense from 'next-google-ads'
+
+export default function MyPage() {
+  return (
+    <GoogleAdsense
+      client="ca-pub-xxxxx"
+      slot="99999999"
+      style={{
+        display: 'block',
+        width: '300px',
+        height: '250px',
+      }}
+      className="my-ad-container"
+    />
+  )
+}
+```
+
+### Multiple Ads on One Page
+
+```jsx
+import GoogleAdsense from 'next-google-ads'
+
+export default function MyPage() {
+  return (
+    <div>
+      <GoogleAdsense
+        client="ca-pub-xxxxx"
+        slot="11111111"
+        responsive="true"
+      />
+      <GoogleAdsense
+        client="ca-pub-xxxxx"
+        slot="22222222"
+        responsive="true"
+      />
+    </div>
+  )
+}
+```
+
+## Development
+
+### Setup
 
 ```bash
-cd example # if not already in the example folder
-npm run build # builds to dist
-netlify deploy # deploy the dist folder
+npm install
 ```
 
-Alternatively, if you already have a git repo connected, you can set up continuous deployment with Netlify:
+### Build
 
 ```bash
-netlify init
-# build command: yarn build && cd example && yarn && yarn build
-# directory to deploy: example/dist
-# pick yes for netlify.toml
+npm run build
 ```
 
-## Named Exports
+### Development Mode
 
-Per Palmer Group guidelines, [always use named exports.](https://github.com/palmerhq/typescript#exports) Code split inside your React app instead of your React library.
-
-## Including Styles
-
-There are many ways to ship styles, including with CSS-in-JS. TSDX has no opinion on this, configure how you like.
-
-For vanilla CSS, you can include it at the root directory and add it to the `files` section in your `package.json`, so that it can be imported separately by your users and run through their bundler's loader.
-
-## Publishing to NPM
-
-This project uses [np](https://github.com/sindresorhus/np) to streamline the npm publishing process.
-
-### Publishing Steps
-
-1. Commit and push your changes:
 ```bash
-git add .
-git commit -m "Your commit message"
-git push
+npm run dev
 ```
 
-2. Run `np` to publish:
+### Testing
+
 ```bash
-npm run release
+npm test
 ```
 
-`np` automatically performs the following:
-- Checks and updates version number (semver compliant)
-- Runs tests
-- Builds the project
-- Creates a Git tag
-- Publishes to npm
-- Creates a GitHub release draft
+### Linting
 
-### Pre-publishing Checklist
-
-- [ ] Logged in to npm (`npm login`)
-- [ ] Verified that the package name is available on npm
-- [ ] Verified that `package.json` information (description, keywords, repository, etc.) is correct
-
-## Usage with Lerna
-
-When creating a new package with TSDX within a project set up with Lerna, you might encounter a `Cannot resolve dependency` error when trying to run the `example` project. To fix that you will need to make changes to the `package.json` file _inside the `example` directory_.
-
-The problem is that due to the nature of how dependencies are installed in Lerna projects, the aliases in the example project's `package.json` might not point to the right place, as those dependencies might have been installed in the root of your Lerna project.
-
-Change the `alias` to point to where those packages are actually installed. This depends on the directory structure of your Lerna project, so the actual path might be different from the diff below.
-
-```diff
-   "alias": {
--    "react": "../node_modules/react",
--    "react-dom": "../node_modules/react-dom"
-+    "react": "../../../node_modules/react",
-+    "react-dom": "../../../node_modules/react-dom"
-   },
+```bash
+npm run lint
 ```
 
-An alternative to fixing this problem would be to remove aliases altogether and define the dependencies referenced as aliases as dev dependencies instead. [However, that might cause other problems.](https://github.com/palmerhq/tsdx/issues/64)
+### Formatting
+
+```bash
+npm run format
+```
+
+## License
+
+MIT
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Author
+
+Hidetaka Okamoto
+
+## Repository
+
+https://github.com/hideokamoto/next-google-ads
