@@ -3,8 +3,8 @@ Load Google Adsense script and place the ad code.
 
 ## Requirement
 
-You need to use Next.js >=11.0.
-Because the library using `next/script` feature.
+You need to use Next.js >=16.0 and React >=19.0.
+This library uses the `next/script` feature with optimized loading strategies.
 
 ## Usage
 
@@ -34,14 +34,16 @@ export const GoogleAdsenseWidget: FC = () => {
     <>
       <Script
         id="google-adsense"
-        src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
         data-ad-client="ca-pub-xxxxx"
+        strategy="afterInteractive"
+        crossOrigin="anonymous"
         onLoad={() => {
-          if (typeof window !== 'undefined') {
-            window.onload = () => {
-              ((window as any).adsbygoogle =
-                (window as any).adsbygoogle || []).push({});
-            };
+          try {
+            ((window as any).adsbygoogle =
+              (window as any).adsbygoogle || []).push({});
+          } catch (err) {
+            console.error('AdSense error:', err);
           }
         }}
       />

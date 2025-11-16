@@ -49,14 +49,16 @@ export const NextGoogleAdsenseScript: FC<Pick<
   return (
     <Script
       id="google-adsense"
-      src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
       data-ad-client={client}
+      strategy="afterInteractive"
+      crossOrigin="anonymous"
       onLoad={() => {
-        if (typeof window !== 'undefined') {
-          window.onload = () => {
-            ((window as any).adsbygoogle =
-              (window as any).adsbygoogle || []).push({});
-          };
+        try {
+          ((window as any).adsbygoogle =
+            (window as any).adsbygoogle || []).push({});
+        } catch (err) {
+          console.error('AdSense error:', err);
         }
       }}
     />
