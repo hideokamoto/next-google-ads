@@ -1,5 +1,11 @@
-import React, { CSSProperties, FC } from 'react';
 import Script from 'next/script';
+import type { CSSProperties, FC } from 'react';
+
+interface WindowWithAdsbygoogle extends Window {
+  adsbygoogle?: Array<Record<string, unknown>>;
+}
+
+declare const window: WindowWithAdsbygoogle;
 
 export type GoogleAdsenseProps = {
   className?: string;
@@ -41,10 +47,9 @@ export const GoogleAdsenseWidget: FC<GoogleAdsenseProps> = ({
   );
 };
 
-export const NextGoogleAdsenseScript: FC<Pick<
-  GoogleAdsenseProps,
-  'client'
->> = ({ client }) => {
+export const NextGoogleAdsenseScript: FC<
+  Pick<GoogleAdsenseProps, 'client'>
+> = ({ client }) => {
   if (!client) return null;
   return (
     <Script
@@ -55,8 +60,9 @@ export const NextGoogleAdsenseScript: FC<Pick<
       crossOrigin="anonymous"
       onLoad={() => {
         try {
-          ((window as any).adsbygoogle =
-            (window as any).adsbygoogle || []).push({});
+          const adsbygoogle = window.adsbygoogle || [];
+          window.adsbygoogle = adsbygoogle;
+          adsbygoogle.push({});
         } catch (err) {
           console.error('AdSense error:', err);
         }
