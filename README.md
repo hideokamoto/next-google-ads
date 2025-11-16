@@ -198,7 +198,35 @@ For vanilla CSS, you can include it at the root directory and add it to the `fil
 
 ## Publishing to NPM
 
-We recommend using [np](https://github.com/sindresorhus/np).
+This project uses [np](https://github.com/sindresorhus/np) to streamline the npm publishing process.
+
+### Publishing Steps
+
+1. Commit and push your changes:
+```bash
+git add .
+git commit -m "Your commit message"
+git push
+```
+
+2. Run `np` to publish:
+```bash
+npm run release
+```
+
+`np` automatically performs the following:
+- Checks and updates version number (semver compliant)
+- Runs tests
+- Builds the project
+- Creates a Git tag
+- Publishes to npm
+- Creates a GitHub release draft
+
+### Pre-publishing Checklist
+
+- [ ] Logged in to npm (`npm login`)
+- [ ] Verified that the package name is available on npm
+- [ ] Verified that `package.json` information (description, keywords, repository, etc.) is correct
 
 ## Usage with Lerna
 

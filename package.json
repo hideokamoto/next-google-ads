@@ -17,7 +17,8 @@
     "lint": "tsdx lint",
     "prepare": "tsdx build",
     "size": "size-limit",
-    "analyze": "size-limit --why"
+    "analyze": "size-limit --why",
+    "release": "np"
   },
   "peerDependencies": {
     "next": ">=16",
@@ -34,8 +35,29 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
+  "np": {
+    "yarn": false,
+    "contents": ".",
+    "anyBranch": false,
+    "publish": true,
+    "releaseDraft": true
+  },
   "name": "next-google-ads",
+  "description": "Google AdSense component for Next.js with optimized script loading",
   "author": "Hidetaka Okamoto",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hideokamoto/next-google-ads.git"
+  },
+  "keywords": [
+    "nextjs",
+    "next",
+    "google-adsense",
+    "adsense",
+    "ads",
+    "react",
+    "typescript"
+  ],
   "module": "dist/next-google-ads.esm.js",
   "size-limit": [
     {
@@ -53,6 +75,7 @@
     "@types/react-dom": "^19.0.0",
     "husky": "^7.0.2",
     "next": "^16.0.0",
+    "np": "^10.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "size-limit": "^5.0.3",
