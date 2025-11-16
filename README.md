@@ -1,59 +1,292 @@
 # Google Adsense for Next.js
-Load Google Adsense script and place the ad code.
+
+Load Google Adsense script and place the ad code with support for the latest 2024-2025 features.
+
+## 🎯 Features
+
+- ✅ **Auto Ads** - AI-powered automatic ad placement (2024)
+- ✅ **Consent Mode v2** - GDPR compliance (required since March 2024)
+- ✅ **Ad Intents** - New intent-driven ad format (2024)
+- ✅ **Anchor Ads** - Collapsible mobile ads with position control (2024)
+- ✅ **In-Article Ads** - Modern content-integrated ads
+- ✅ **In-Feed Ads** - Ads for lists and feeds
+- ✅ **Multiplex Ads** - Related content ads
+- ✅ **Non-Personalized Ads** - Privacy-focused advertising
+- ✅ **TypeScript** - Full type safety
 
 ## Requirement
 
 You need to use Next.js >=11.0.
 Because the library using `next/script` feature.
 
-## Usage
+## Installation
 
-```jsx
+```bash
+npm install next-google-ads
+# or
+yarn add next-google-ads
+```
+
+## 📚 Usage Examples
+
+### Basic Display Ad
+
+```tsx
 import GoogleAdsense from 'next-google-ads'
 
-export const GoogleAdsenseWidget: FC = () => {
+export const BasicAd = () => {
   return (
-      <GoogleAdsense
+    <GoogleAdsense
+      client="ca-pub-xxxxx"
+      slot="99999999"
+      responsive="true"
+    />
+  )
+}
+```
+
+### 🆕 Auto Ads (2024 Feature)
+
+Auto Ads use AI to automatically place ads on your site for optimal performance.
+
+```tsx
+import { AutoAdsScript } from 'next-google-ads'
+
+// Add this to your _app.tsx or layout
+export default function App({ Component, pageProps }) {
+  return (
+    <>
+      <AutoAdsScript
+        client="ca-pub-xxxxx"
+        config={{
+          enableAutoAds: true,
+          adDensity: 'medium', // 'low' | 'medium' | 'high'
+          enableAdIntents: true, // Enable new Ad Intents format
+        }}
+      />
+      <Component {...pageProps} />
+    </>
+  )
+}
+```
+
+### 🔒 Consent Mode v2 (GDPR Compliance - Required since March 2024)
+
+```tsx
+import { AutoAdsScript } from 'next-google-ads'
+
+export default function App({ Component, pageProps }) {
+  return (
+    <>
+      <AutoAdsScript
+        client="ca-pub-xxxxx"
+        config={{ enableAutoAds: true }}
+        consentMode={{
+          ad_storage: 'denied', // or 'granted'
+          analytics_storage: 'denied',
+          ad_user_data: 'denied', // v2 required
+          ad_personalization: 'denied', // v2 required
+        }}
+      />
+      <Component {...pageProps} />
+    </>
+  )
+}
+```
+
+### 📱 Anchor Ads (2024 Feature - Mobile Collapsible Ads)
+
+```tsx
+import { AnchorAd } from 'next-google-ads'
+
+export const MobileAd = () => {
+  return (
+    <AnchorAd
+      client="ca-pub-xxxxx"
+      slot="99999999"
+      position="bottom" // 'top' | 'bottom' | 'both'
+      collapsible={true} // Users can collapse the ad
+    />
+  )
+}
+```
+
+### 📰 In-Article Ads (Modern Content Format)
+
+Perfect for placing ads within your article content.
+
+```tsx
+import { InArticleAd } from 'next-google-ads'
+
+export const ArticleContent = () => {
+  return (
+    <article>
+      <p>Your content...</p>
+
+      <InArticleAd
         client="ca-pub-xxxxx"
         slot="99999999"
-        responsive="true"
       />
+
+      <p>More content...</p>
+    </article>
+  )
+}
+```
+
+### 📋 In-Feed Ads (Modern List/Feed Format)
+
+Perfect for placing ads in lists, feeds, or card layouts.
+
+```tsx
+import { InFeedAd } from 'next-google-ads'
+
+export const FeedList = () => {
+  return (
+    <div>
+      {posts.map((post, index) => (
+        <div key={post.id}>
+          <PostCard post={post} />
+
+          {/* Show ad after every 5 posts */}
+          {index % 5 === 4 && (
+            <InFeedAd
+              client="ca-pub-xxxxx"
+              slot="99999999"
+              layoutKey="-fb+5w+4e-db+86" // Get from AdSense
+            />
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+### 🔗 Multiplex Ads (Related Content)
+
+Shows related content with ads.
+
+```tsx
+import { MultiplexAd } from 'next-google-ads'
+
+export const RelatedContent = () => {
+  return (
+    <aside>
+      <h3>Related Articles</h3>
+      <MultiplexAd
+        client="ca-pub-xxxxx"
+        slot="99999999"
+      />
+    </aside>
+  )
+}
+```
+
+### 🔐 Non-Personalized Ads (Privacy-Focused)
+
+For privacy-conscious users or GDPR compliance.
+
+```tsx
+import GoogleAdsense from 'next-google-ads'
+
+export const PrivacyFriendlyAd = () => {
+  return (
+    <GoogleAdsense
+      client="ca-pub-xxxxx"
+      slot="99999999"
+      responsive="true"
+      npaMode={true} // Non-personalized ads
+    />
+  )
+}
+```
+
+### 🧪 Test Mode
+
+Test your ads without affecting your account metrics.
+
+```tsx
+import GoogleAdsense from 'next-google-ads'
+
+export const TestAd = () => {
+  return (
+    <GoogleAdsense
+      client="ca-pub-xxxxx"
+      slot="99999999"
+      responsive="true"
+      adTest="on" // Enable test mode
+    />
   )
 }
 ```
 
 ## Load ad.js manually
 
+```tsx
+import { NextGoogleAdsenseScript, GoogleAdsenseWidget } from 'next-google-ads'
 
-```jsx
-import Script from 'next/script';
-import {GoogleAdsenseWidget} from 'next-google-ads'
-
-export const GoogleAdsenseWidget: FC = () => {
+export const ManualAd = () => {
   return (
     <>
-      <Script
-        id="google-adsense"
-        src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-        data-ad-client="ca-pub-xxxxx"
-        onLoad={() => {
-          if (typeof window !== 'undefined') {
-            window.onload = () => {
-              ((window as any).adsbygoogle =
-                (window as any).adsbygoogle || []).push({});
-            };
-          }
-        }}
+      <NextGoogleAdsenseScript
+        client="ca-pub-xxxxx"
+        npaMode={false}
+        crossOrigin={true}
       />
       <GoogleAdsenseWidget
         client="ca-pub-xxxxx"
         slot="99999999"
         responsive="true"
       />
-      </>
+    </>
   )
 }
 ```
+
+## 📖 API Reference
+
+### Components
+
+- `GoogleAdsense` - Standard display ad (default export)
+- `AutoAdsScript` - Auto Ads with AI placement (2024)
+- `AnchorAd` - Mobile collapsible ads (2024)
+- `InArticleAd` - Article content ads
+- `InFeedAd` - List/feed ads
+- `MultiplexAd` - Related content ads
+- `GoogleAdsenseWidget` - Ad widget only (no script)
+- `NextGoogleAdsenseScript` - Script only (no widget)
+
+### Types
+
+- `GoogleAdsenseProps` - Standard ad props
+- `AutoAdsProps` - Auto Ads configuration
+- `ConsentModeV2` - GDPR consent settings
+- `AnchorAdProps` - Anchor ad configuration
+- `InArticleAdProps` - In-article ad props
+- `InFeedAdProps` - In-feed ad props
+- `MultiplexAdProps` - Multiplex ad props
+
+## 🆕 What's New in 2024-2025
+
+### Auto Ads (2024)
+AI-powered automatic ad placement that optimizes for revenue and user experience.
+
+### Consent Mode v2 (Required since March 2024)
+Enhanced privacy controls for GDPR compliance with new `ad_user_data` and `ad_personalization` signals.
+
+### Ad Intents (2024)
+New intent-driven ad format that places contextual ads within your content.
+
+### Anchor Ads (2024)
+Collapsible mobile ads with position control (top/bottom/both) for better user experience.
+
+### Enhanced Ad Formats
+Support for In-Article, In-Feed, and Multiplex ads for better content integration.
+
+## License
+
+MIT
 
 
 # [Appendix] TSDX React User Guide
