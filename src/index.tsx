@@ -23,9 +23,8 @@ export type AutoAdsConfig = {
   enableAdIntents?: boolean; // New 2024 format
 };
 
-// Anchor and Side Rail positioning (2024 feature)
+// Anchor positioning (2024 feature)
 export type AnchorPosition = 'top' | 'bottom' | 'both';
-export type SideRailPosition = 'left' | 'right' | 'both';
 
 export type GoogleAdsenseProps = {
   className?: string;
