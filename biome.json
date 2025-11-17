@@ -30,6 +30,9 @@
       },
       "suspicious": {
         "noAssignInExpressions": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
       }
     }
   },
