@@ -1,5 +1,11 @@
-import React, { CSSProperties, FC } from 'react';
 import Script from 'next/script';
+import type { CSSProperties, FC } from 'react';
+
+interface WindowWithAdsbygoogle extends Window {
+  adsbygoogle?: Array<Record<string, unknown>>;
+}
+
+declare const window: WindowWithAdsbygoogle;
 
 // Consent Mode v2 types (2024 GDPR requirement)
 export type ConsentModeV2 = {
@@ -239,8 +245,7 @@ export const AutoAdsScript: FC<AutoAdsProps> = ({
         data-npa-mode={npaMode ? '1' : undefined}
         onLoad={() => {
           if (typeof window !== 'undefined' && config?.enableAutoAds) {
-            (window as any).adsbygoogle = (window as any).adsbygoogle || [];
-            (window as any).adsbygoogle.push({
+            (window.adsbygoogle = window.adsbygoogle || []).push({
               google_ad_client: client,
               enable_page_level_ads: true,
               ...(config.adDensity && { ad_density: config.adDensity }),
@@ -253,24 +258,26 @@ export const AutoAdsScript: FC<AutoAdsProps> = ({
   );
 };
 
-export const NextGoogleAdsenseScript: FC<Pick<GoogleAdsenseProps, 'client'> & {
-  npaMode?: boolean;
-  crossOrigin?: boolean;
-}> = ({ client, npaMode = false, crossOrigin = true }) => {
+export const NextGoogleAdsenseScript: FC<
+  Pick<GoogleAdsenseProps, 'client'> & {
+    npaMode?: boolean;
+    crossOrigin?: boolean;
+  }
+> = ({ client, npaMode = false, crossOrigin = true }) => {
   if (!client) return null;
   return (
     <Script
       id="google-adsense"
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
       data-ad-client={client}
+      strategy="afterInteractive"
       crossOrigin={crossOrigin ? 'anonymous' : undefined}
       data-npa-mode={npaMode ? '1' : undefined}
       onLoad={() => {
-        if (typeof window !== 'undefined') {
-          window.onload = () => {
-            ((window as any).adsbygoogle =
-              (window as any).adsbygoogle || []).push({});
-          };
+        try {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (err) {
+          console.error('AdSense error:', err);
         }
       }}
     />

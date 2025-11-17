@@ -1,63 +1,78 @@
 {
-  "version": "0.2.0",
+  "version": "1.1.0",
   "license": "MIT",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
   "files": [
     "dist",
     "src"
   ],
   "engines": {
-    "node": ">=18"
+    "node": ">=20.19.0"
   },
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test --passWithNoTests",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "size": "size-limit",
-    "analyze": "size-limit --why"
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "prepare": "vite build",
+    "release": "np"
   },
   "peerDependencies": {
-    "next": ">=11",
-    "react": ">=16"
+    "next": ">=16",
+    "react": ">=19"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
+  "np": {
+    "yarn": false,
+    "contents": ".",
+    "anyBranch": false,
+    "publish": true,
+    "releaseDraft": true
   },
   "name": "next-google-ads",
+  "description": "Google AdSense component for Next.js with optimized script loading",
   "author": "Hidetaka Okamoto",
-  "module": "dist/next-google-ads.esm.js",
-  "size-limit": [
-    {
-      "path": "dist/next-google-ads.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
-      "path": "dist/next-google-ads.esm.js",
-      "limit": "10 KB"
-    }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hideokamoto/next-google-ads.git"
+  },
+  "keywords": [
+    "nextjs",
+    "next",
+    "google-adsense",
+    "adsense",
+    "ads",
+    "react",
+    "typescript"
   ],
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^5.0.3",
-    "@types/react": "^17.0.19",
-    "@types/react-dom": "^17.0.9",
-    "husky": "^7.0.2",
-    "next": "^11.1.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "size-limit": "^5.0.3",
-    "tsdx": "^0.14.1",
+    "@biomejs/biome": "^2.3.5",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.1.1",
+    "@vitest/ui": "^4.0.9",
+    "jsdom": "^27.2.0",
+    "next": "^16.0.0",
+    "np": "^10.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "tslib": "^2.3.1",
-    "typescript": "^4.4.2"
+    "typescript": "^5.7.0",
+    "vite": "^7.2.2",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^4.0.9"
   }
 }
