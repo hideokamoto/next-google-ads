@@ -1,14 +1,14 @@
-import { createRoot } from 'react-dom/client';
 import { act } from 'react';
+import { createRoot } from 'react-dom/client';
 import {
+  AnchorAd,
+  AutoAdsScript,
+  GoogleAdsense,
   GoogleAdsenseWidget,
   InArticleAd,
   InFeedAd,
   MultiplexAd,
-  AnchorAd,
-  AutoAdsScript,
   NextGoogleAdsenseScript,
-  GoogleAdsense,
 } from '../src';
 
 // Mock next/script
@@ -36,7 +36,12 @@ vi.mock('next/script', () => ({
     });
     // Handle dangerouslySetInnerHTML
     if (dangerouslySetInnerHTML?.__html) {
-      return <script {...htmlProps} dangerouslySetInnerHTML={dangerouslySetInnerHTML} />;
+      return (
+        <script
+          {...htmlProps}
+          dangerouslySetInnerHTML={dangerouslySetInnerHTML}
+        />
+      );
     }
     return <script {...htmlProps}>{children}</script>;
   }),
@@ -247,7 +252,12 @@ describe('InFeedAd', () => {
     const root = createRoot(div);
     act(() => {
       root.render(
-        <InFeedAd client="ca-pub-123" slot="123456" layoutKey="key123" npaMode />
+        <InFeedAd
+          client="ca-pub-123"
+          slot="123456"
+          layoutKey="key123"
+          npaMode
+        />
       );
     });
 
@@ -447,7 +457,9 @@ describe('AutoAdsScript', () => {
     const div = document.createElement('div');
     const root = createRoot(div);
     act(() => {
-      root.render(<AutoAdsScript client="ca-pub-123" consentMode={consentMode} />);
+      root.render(
+        <AutoAdsScript client="ca-pub-123" consentMode={consentMode} />
+      );
     });
 
     const consentScript = div.querySelector(
@@ -669,4 +681,3 @@ describe('GoogleAdsense', () => {
     });
   });
 });
-
