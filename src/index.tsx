@@ -239,7 +239,7 @@ export const AutoAdsScript: FC<AutoAdsProps> = ({
         data-npa-mode={npaMode ? '1' : undefined}
         onLoad={() => {
           if (typeof window !== 'undefined' && config?.enableAutoAds) {
-            ((window as any).adsbygoogle = (window as any).adsbygoogle || []);
+            (window as any).adsbygoogle = (window as any).adsbygoogle || [];
             (window as any).adsbygoogle.push({
               google_ad_client: client,
               enable_page_level_ads: true,
@@ -253,9 +253,10 @@ export const AutoAdsScript: FC<AutoAdsProps> = ({
   );
 };
 
-export const NextGoogleAdsenseScript: FC<
-  Pick<GoogleAdsenseProps, 'client'> & { npaMode?: boolean; crossOrigin?: boolean }
-> = ({ client, npaMode = false, crossOrigin = true }) => {
+export const NextGoogleAdsenseScript: FC<Pick<GoogleAdsenseProps, 'client'> & {
+  npaMode?: boolean;
+  crossOrigin?: boolean;
+}> = ({ client, npaMode = false, crossOrigin = true }) => {
   if (!client) return null;
   return (
     <Script
