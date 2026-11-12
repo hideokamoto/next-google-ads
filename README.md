@@ -317,9 +317,9 @@ npm start
 
 The default example imports and live reloads whatever is in `/dist`, so if you are seeing an out of date component, make sure TSDX is running in watch mode like we recommend above. **No symlinking required**, we use [Parcel's aliasing](https://parceljs.org/module_resolution.html#aliases).
 
-To do a one-off build, use `npm run build`.
+To do a one-off build, use `pnpm run build`.
 
-To run tests, use `npm test`.
+To run tests, use `pnpm test`.
 
 ## Configuration
 
@@ -427,7 +427,9 @@ For vanilla CSS, you can include it at the root directory and add it to the `fil
 
 ## Publishing to NPM
 
-We recommend using [np](https://github.com/sindresorhus/np).
+Releases are automated: merging to `main` runs semantic-release on CircleCI (config: `workflows/publish/npm-polyrepo-semantic-release.yaml` in `hideokamoto/circleci-configurations`). It decides the version from Conventional Commits since the last `v*` tag, pushes the tag, publishes to npm via OIDC trusted publishing, and creates the GitHub Release. Do not bump `version` in `package.json` or publish by hand.
+
+This project uses pnpm (`packageManager` in `package.json`). Before opening a PR, run `pnpm run lint`, `pnpm run typecheck`, `pnpm run build`, and `pnpm test`.
 
 ## Usage with Lerna
 
